@@ -1,0 +1,18 @@
+//
+//  ForecastView.swift
+//  WeatherActivityPlanner
+//
+//  Created by Julian wang on 10/31/26.
+//
+
+import SwiftUI
+
+struct ForecastView: View {
+    var body: some View {
+        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+    }
+}
+
+#Preview {
+    ForecastView()
+}
