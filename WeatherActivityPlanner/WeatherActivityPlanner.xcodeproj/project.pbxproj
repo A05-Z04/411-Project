@@ -27,6 +27,7 @@
 		F13FD5DB3096AB010085CBC0 /* WeatherActivityPlanner.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WeatherActivityPlanner.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F13FD5E83096AB030085CBC0 /* WeatherActivityPlannerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = WeatherActivityPlannerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		F13FD5F23096AB030085CBC0 /* WeatherActivityPlannerUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = WeatherActivityPlannerUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		F17E3DB83096FD43002DF681 /* WeatherActivityPlanner.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; path = WeatherActivityPlanner.xctestplan; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -75,6 +76,7 @@
 		F13FD5D23096AB010085CBC0 = {
 			isa = PBXGroup;
 			children = (
+				F17E3DB83096FD43002DF681 /* WeatherActivityPlanner.xctestplan */,
 				F13FD5DD3096AB010085CBC0 /* WeatherActivityPlanner */,
 				F13FD5EB3096AB030085CBC0 /* WeatherActivityPlannerTests */,
 				F13FD5F53096AB030085CBC0 /* WeatherActivityPlannerUITests */,

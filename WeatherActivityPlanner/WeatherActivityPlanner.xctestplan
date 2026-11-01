@@ -1,0 +1,39 @@
+{
+  "configurations" : [
+    {
+      "id" : "013DED1A-0575-49CA-AA67-050768C104AA",
+      "name" : "Test Scheme Action",
+      "options" : {
+
+      }
+    }
+  ],
+  "defaultOptions" : {
+    "performanceAntipatternCheckerEnabled" : true,
+    "targetForVariableExpansion" : {
+      "containerPath" : "container:WeatherActivityPlanner.xcodeproj",
+      "identifier" : "F13FD5DA3096AB010085CBC0",
+      "name" : "WeatherActivityPlanner"
+    }
+  },
+  "testTargets" : [
+    {
+      "parallelizable" : false,
+      "target" : {
+        "containerPath" : "container:WeatherActivityPlanner.xcodeproj",
+        "identifier" : "F13FD5E73096AB030085CBC0",
+        "name" : "WeatherActivityPlannerTests"
+      }
+    },
+    {
+      "enabled" : false,
+      "parallelizable" : true,
+      "target" : {
+        "containerPath" : "container:WeatherActivityPlanner.xcodeproj",
+        "identifier" : "F13FD5F13096AB030085CBC0",
+        "name" : "WeatherActivityPlannerUITests"
+      }
+    }
+  ],
+  "version" : 1
+}
