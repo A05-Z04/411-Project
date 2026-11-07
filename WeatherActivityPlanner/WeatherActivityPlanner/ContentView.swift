@@ -1,7 +1,12 @@
 import SwiftUI
 
 struct ContentView: View {
-    @State private var selectedTab = 0
+    private enum Tab: Hashable {
+        case home
+        case forecast
+    }
+
+    @State private var selectedTab: Tab = .home
 
     // Use Fullerton until city search is ready.
     private let cityName = "Fullerton"
@@ -9,25 +14,23 @@ struct ContentView: View {
     private let longitude = -117.92
 
     var body: some View {
-        // Switch between home and forecast.
         TabView(selection: $selectedTab) {
             HomeView(cityName: cityName, latitude: latitude, longitude: longitude) {
-                selectedTab = 1
+                selectedTab = .forecast
             }
             .tabItem {
                 Label("Home", systemImage: "house.fill")
             }
-            .tag(0)
+            .tag(Tab.home)
 
             ForecastView(cityName: cityName, latitude: latitude, longitude: longitude)
                 .tabItem {
                     Label("Forecast", systemImage: "cloud.sun.fill")
                 }
-                .tag(1)
+                .tag(Tab.forecast)
         }
     }
 }
-
 
 #Preview {
     ContentView()
