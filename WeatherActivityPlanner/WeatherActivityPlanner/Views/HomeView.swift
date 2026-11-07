@@ -16,22 +16,7 @@ struct HomeView: View {
                         .font(.title)
                         .bold()
 
-                    if viewModel.isLoading && viewModel.weather == nil {
-                        ProgressView("Loading weather...")
-                            .frame(maxWidth: .infinity)
-                    } else if let weather = viewModel.weather {
-                        weatherCard(weather)
-                    } else if let error = viewModel.errorMessage {
-                        VStack(alignment: .leading, spacing: 12) {
-                            Text(error)
-
-                            Button("Try Again") {
-                                Task {
-                                    await loadWeather()
-                                }
-                            }
-                        }
-                    }
+                    weatherSection
 
                     Button("View 7-Day Forecast") {
                         showForecast()
@@ -51,8 +36,35 @@ struct HomeView: View {
                 .padding()
             }
             .navigationTitle("Home")
-            .task {
+            .refreshable {
                 await loadWeather()
+            }
+            .task {
+                if viewModel.weather == nil {
+                    await loadWeather()
+                }
+            }
+        }
+    }
+
+    private var weatherSection: some View {
+        VStack(alignment: .leading, spacing: 12) {
+            if let weather = viewModel.weather {
+                weatherCard(weather)
+            }
+
+            if let error = viewModel.errorMessage {
+                Text(viewModel.weather == nil ? error : "Couldn't refresh. Showing the last weather loaded.")
+                    .foregroundStyle(.secondary)
+
+                Button("Try Again") {
+                    Task {
+                        await loadWeather()
+                    }
+                }
+            } else if viewModel.weather == nil {
+                ProgressView("Loading weather...")
+                    .frame(maxWidth: .infinity)
             }
         }
     }
@@ -90,6 +102,9 @@ struct HomeView: View {
     }
 
     private func loadWeather() async {
+        // Skip the request if weather is already loading.
+        guard !viewModel.isLoading else { return }
+
         await viewModel.loadWeather(latitude: latitude, longitude: longitude)
     }
 }
