@@ -1,3 +1,4 @@
+import Foundation
 import SwiftUI
 
 struct HomeView: View {
@@ -7,6 +8,7 @@ struct HomeView: View {
     let showForecast: () -> Void
 
     @StateObject private var viewModel = ForecastViewModel()
+    @State private var lastUpdated: Date?
 
     var body: some View {
         NavigationStack {
@@ -51,6 +53,12 @@ struct HomeView: View {
         VStack(alignment: .leading, spacing: 12) {
             if let weather = viewModel.weather {
                 weatherCard(weather)
+
+                if let lastUpdated {
+                    Text("Updated \(lastUpdated.formatted(date: .omitted, time: .shortened))")
+                        .font(.footnote)
+                        .foregroundStyle(.secondary)
+                }
             }
 
             if let error = viewModel.errorMessage {
@@ -102,9 +110,13 @@ struct HomeView: View {
     }
 
     private func loadWeather() async {
-        // Skip the request if weather is already loading.
         guard !viewModel.isLoading else { return }
 
         await viewModel.loadWeather(latitude: latitude, longitude: longitude)
+
+        // Only update the time after a successful load.
+        if viewModel.weather != nil && viewModel.errorMessage == nil {
+            lastUpdated = .now
+        }
     }
 }
