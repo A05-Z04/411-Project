@@ -79,6 +79,10 @@ struct HomeView: View {
 
     private func weatherCard(_ weather: WeatherResponse) -> some View {
         VStack(alignment: .leading, spacing: 12) {
+            Text("Current conditions")
+                .font(.subheadline)
+                .foregroundStyle(.secondary)
+
             HStack(spacing: 12) {
                 Image(systemName: WeatherCondition.icon(for: weather.current.weather_code))
                     .font(.largeTitle)
@@ -94,13 +98,18 @@ struct HomeView: View {
                 }
             }
 
-            if let high = weather.daily.temperature_2m_max.first,
-               let low = weather.daily.temperature_2m_min.first {
-                Text("High \(Int(high.rounded()))°  Low \(Int(low.rounded()))°")
+            Divider()
+
+            if let high = weather.daily.temperature_2m_max.first {
+                LabeledContent("Today's high", value: "\(Int(high.rounded()))°F")
+            }
+
+            if let low = weather.daily.temperature_2m_min.first {
+                LabeledContent("Today's low", value: "\(Int(low.rounded()))°F")
             }
 
             if let rainChance = weather.daily.precipitation_probability_max.first {
-                Text("Chance of rain: \(rainChance)%")
+                LabeledContent("Rain chance today", value: "\(rainChance)%")
             }
         }
         .frame(maxWidth: .infinity, alignment: .leading)
