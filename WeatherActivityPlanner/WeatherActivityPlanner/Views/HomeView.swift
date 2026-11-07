@@ -19,6 +19,7 @@ struct HomeView: View {
                     Text(cityName)
                         .font(.title)
                         .bold()
+                        .accessibilityAddTraits(.isHeader)
 
                     weatherSection
 
@@ -26,11 +27,13 @@ struct HomeView: View {
                         showForecast()
                     }
                     .buttonStyle(.borderedProminent)
+                    .accessibilityHint("Switches to the Forecast tab.")
 
                     VStack(alignment: .leading, spacing: 10) {
                         Text("Upcoming Activities")
                             .font(.title2)
                             .bold()
+                            .accessibilityAddTraits(.isHeader)
 
                         Text("No activities planned yet. Your saved activities will appear here.")
                             .foregroundStyle(.secondary)
@@ -40,6 +43,19 @@ struct HomeView: View {
                 .padding()
             }
             .navigationTitle("Home")
+            .toolbar {
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button {
+                        Task {
+                            await loadWeather()
+                        }
+                    } label: {
+                        Label("Refresh weather", systemImage: "arrow.clockwise")
+                            .labelStyle(.iconOnly)
+                    }
+                    .disabled(viewModel.isLoading)
+                }
+            }
             .refreshable {
                 await loadWeather()
             }
@@ -87,6 +103,7 @@ struct HomeView: View {
                         await loadWeather()
                     }
                 }
+                .disabled(viewModel.isLoading)
             } else if viewModel.weather == nil {
                 ProgressView("Loading weather...")
                     .frame(maxWidth: .infinity)
@@ -104,6 +121,7 @@ struct HomeView: View {
                 Image(systemName: WeatherCondition.icon(for: weather.current.weather_code))
                     .font(.largeTitle)
                     .foregroundStyle(.orange)
+                    .accessibilityHidden(true)
 
                 VStack(alignment: .leading) {
                     Text("\(Int(weather.current.temperature_2m.rounded()))°F")
