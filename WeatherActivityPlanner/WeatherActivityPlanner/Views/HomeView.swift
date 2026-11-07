@@ -7,8 +7,10 @@ struct HomeView: View {
     let longitude: Double
     let showForecast: () -> Void
 
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @StateObject private var viewModel = ForecastViewModel()
     @State private var lastUpdated: Date?
+    @State private var showWeatherCard = false
 
     var body: some View {
         NavigationStack {
@@ -52,12 +54,27 @@ struct HomeView: View {
     private var weatherSection: some View {
         VStack(alignment: .leading, spacing: 12) {
             if let weather = viewModel.weather {
-                weatherCard(weather)
+                VStack(alignment: .leading, spacing: 8) {
+                    weatherCard(weather)
 
-                if let lastUpdated {
-                    Text("Updated \(lastUpdated.formatted(date: .omitted, time: .shortened))")
-                        .font(.footnote)
-                        .foregroundStyle(.secondary)
+                    if let lastUpdated {
+                        Text("Updated \(lastUpdated.formatted(date: .omitted, time: .shortened))")
+                            .font(.footnote)
+                            .foregroundStyle(.secondary)
+                    }
+                }
+                .opacity(reduceMotion || showWeatherCard ? 1 : 0)
+                .offset(y: reduceMotion || showWeatherCard ? 0 : 12)
+                .task {
+                    guard !reduceMotion, !showWeatherCard else { return }
+
+                    // Let the card render before starting the fade.
+                    try? await Task.sleep(for: .milliseconds(80))
+                    guard !Task.isCancelled else { return }
+
+                    withAnimation(.easeOut(duration: 0.65)) {
+                        showWeatherCard = true
+                    }
                 }
             }
 
